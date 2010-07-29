@@ -1,9 +1,9 @@
 /**
- * @class View lalla
+ * @class View
  * @requires Events,
  * @requires Options
  */
-var View  = new Class({
+var View = new Class({
 	Implements: [Events, Options],
 	/**
 	 * @constructor
@@ -13,7 +13,7 @@ var View  = new Class({
 	 */
 	initialize: function(element, options) {
 		var type = $type(element);
-		if(type != 'element' && type != 'window') throw 'Type of element should be element or window but is ' + type;
+		if (type != 'element' && type != 'window') throw 'Type of element should be element or window but is ' + type;
 		this.setOptions(options);
 		this.element = element;
 		this.build();
@@ -30,8 +30,9 @@ var View  = new Class({
 	get: function(attribute) {
 		return this.chooseGetterSetter('get', attribute);
 	},
-	chooseGetterSetter: function(typ, attribute, value){
+	chooseGetterSetter: function(typ, attribute, value) {
 		var name = typ + attribute.capitalize();
 		return this[name] ? this[name](value) : this.element[typ](attribute, value)
 	}
 });
+

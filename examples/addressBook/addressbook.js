@@ -5,17 +5,24 @@
  * Time: 20:53:11
  * To change this template use File | Settings | File Templates.
  */
+var AddressListActivityView = new Class({
+	Extends: View.Mustache,
+	options: {
+		template: '<ul>{{#address}}<li uid="{{uid}}">{{firstname}} {{name}}</li>{{/address}}</ul>'
+	}
+})
 
 var AddressListActivity = new Class({
 	Extends: Activity,
 	eventListener: {
-			view: {
+			element: {
 				'click:relay(li)': 'showAddress'
 			},
 		eventBus: {
 			addressChanged: 'addAddress'
 		}
 	},
+	view: AddressListActivityView,
 	build: function() {
 		this.model = new Model(this.eventBus);
 		this.options.addressJson.addresses.each(function(address) {
@@ -32,7 +39,7 @@ var AddressListActivity = new Class({
 			uids.push(address.uid);
 			this.model.set('uids', uids);
 		}
-		this.render();
+		if (this.allowRendering) this.render();
 		this.eventBus.fireEvent('addressBookLengthChanged', uids.length);
 	},
 	removeAddress: function(uuid) {
@@ -41,21 +48,20 @@ var AddressListActivity = new Class({
 		this.eventBus.fireEvent('addressBookLengthChanged', this.model.get('uids').length);
 	},
 	showAddress: function(event, li) {
-		var uid = this.model.get('uids')[li.id.replace('item', '')];
-		this.eventBus.fireEvent('showAddress', this.model.get(uid));
+		this.eventBus.fireEvent('showAddress', this.model.get(li.get('uid')));
 	},
 	render: function() {
 		if (this.allowRendering) {
-			this.view.empty();
-			var innerHTML = '<ul>';
+			var address = [];
 			this.model.get('uids').each(function(uid, cnt) {
-				var address = this.model.get(uid);
-				innerHTML += '<li id="item' + cnt + '">' + address.firstname + ' ' + address.name + '</li>';
+				address.push(this.model.get(uid));
 			}, this);
-			this.view.set('html', innerHTML + '</ul>');
+			this.view.set('html', {address: address})
 		}
 	}
 });
+
+
 
 var AddressListLengthActivity = new Class({
 	Extends: Activity,
@@ -94,14 +100,18 @@ var AddressListEditor = new Class({
 	}
 });
 
+
 var AddressListAdd = new Class({
 	Extends: Activity,
 	eventListener: {
-		view: {'click': 'addAddress'}
+		element: {click: 'addAddress'}
 	},
 	addAddress: function() {
+		console.log('test')
 		this.eventBus.fireEvent('showAddress', { 'uid' : '', 'name' : '', 'firstname' : '', 'place' : '' })
 	}
 
 });
+
+
 

@@ -3,7 +3,8 @@
 		{
 			"firstname": "Elizabeth",
 			"name": "Price",
-			"place": "Oxford"
+			"place": "Oxford",
+			"uid": "0"
 		}
 	]
 }

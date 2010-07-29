@@ -8,13 +8,14 @@
 View.Mustache = new Class({
 	Extends: View,
 	initialize: function(element, options){
-		var template = options.template;
+		var template = this.options.template || options.template;
 		if(!template && $type(template) != 'string') throw 'A Mustache view needs a template string';
 		this.parent(element, options);
 	},
 	setHtml: function(json){
 		if(!json || $type(json) != 'object') throw 'Either no json is passed or the passed json is not an object';
 		var options  = this.options;
+		console.log('tets')
 		this.element.innerHTML = Mustache.to_html(options.template, json, options.partial);
 	}
 });

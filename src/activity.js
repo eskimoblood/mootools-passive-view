@@ -4,8 +4,9 @@ var Activity = new Class({
 	initialize: function(eventBus, options) {
 		this.setOptions(options);
 		this.eventBus = eventBus;
-		element = options.element ? $(options.element) : window;
-		this.view = this.view  ? new this.view(element, this.options.view) : element;
+		this.element = options.element ? $(options.element) : window;
+		this.view = this.view  ? new this.view(this.element, this.options.view) : this.element;
+
 		var events = this.eventListener;
 		for(var i in events) {
 			var eventTyp = events[i];
